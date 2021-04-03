@@ -57,7 +57,9 @@ getSortedList :: [[Char]] -> [(Int, Int)]
 getSortedList maze = reverse (sortBy (compare `on` fst) (finalPlayerList maze (clearingPlayerList maze)))
 
 applyGravityForOnePlayer :: [[Char]] -> (Int, Int) -> [[Char]]
-applyGravityForOnePlayer maze playerPosition = updateMatrix (updateMatrix maze '1' (getStopIndex maze)) '-' (head (getSortedList maze))
+applyGravityForOnePlayer maze playerPosition = if (getStopIndex maze == (head (getSortedList maze)))
+    then maze
+    else updateMatrix (updateMatrix maze '1' (getStopIndex maze)) '-' (head (getSortedList maze))
 
 getPlayerColumn :: [[Char]] -> Int -> [Char]
 getPlayerColumn maze column = map (!! column) maze

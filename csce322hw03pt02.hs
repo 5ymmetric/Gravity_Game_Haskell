@@ -15,8 +15,15 @@ main = do
 
 -- YOUR CODE SHOULD COME AFTER THIS POINT
 onePlayerManyRotations :: [[Char]] -> [[Char]] -> [[Char]]
-onePlayerManyRotations maze [[]] = maze
-onePlayerManyRotations maze moves = onePlayerManyRotations (rotate maze (head moves)) (tail moves)
+onePlayerManyRotations maze [] = maze
+onePlayerManyRotations maze (move:moves)
+    | isSolved maze = maze
+    | otherwise = onePlayerManyRotations (onePlayerOneRotation maze move) moves
+
+onePlayerOneRotation :: [[Char]] -> [Char] -> [[Char]]
+onePlayerOneRotation maze move = if isSolved maze
+    then maze
+    else rotate maze move
 
 clockwise :: [[Char]] -> [[Char]]
 clockwise maze = transpose (reverse maze)
@@ -25,7 +32,6 @@ counterClockwise :: [[Char]] -> [[Char]]
 counterClockwise maze = reverse (transpose maze)
 
 rotate :: [[Char]] -> [Char] -> [[Char]]
-rotate maze [] = maze
 rotate maze move
     | (move == "c") = applyGravityForOnePlayer (clockwise maze) (head (getSortedList maze))
     | (move == "cc") = applyGravityForOnePlayer (counterClockwise maze) (head (getSortedList maze))
@@ -57,7 +63,9 @@ getSortedList :: [[Char]] -> [(Int, Int)]
 getSortedList maze = reverse (sortBy (compare `on` fst) (finalPlayerList maze (clearingPlayerList maze)))
 
 applyGravityForOnePlayer :: [[Char]] -> (Int, Int) -> [[Char]]
-applyGravityForOnePlayer maze playerPosition = updateMatrix (updateMatrix maze '1' (getStopIndex maze)) '-' (head (getSortedList maze))
+applyGravityForOnePlayer maze playerPosition = if (getStopIndex maze == (head (getSortedList maze)))
+    then maze
+    else updateMatrix (updateMatrix maze '1' (getStopIndex maze)) '-' (head (getSortedList maze))
 
 getPlayerColumn :: [[Char]] -> Int -> [Char]
 getPlayerColumn maze column = map (!! column) maze
