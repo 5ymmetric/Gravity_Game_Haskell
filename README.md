@@ -1,1 +1,1 @@
-# Gravity_Game_Haskell
+# Gravity Game Haskell
