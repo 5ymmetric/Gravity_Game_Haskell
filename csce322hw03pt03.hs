@@ -9,7 +9,7 @@ import Helpers
 -- The main method that will be used for testing / command line access
 main = do
  args <- getArgs
- filename <- readFile ("part01test01.g")
+ filename <- readFile (head args)
  (maze,moves) <- readGravityMazeFile filename
  print "Result"
  printMaze (manyPlayersManyRotations maze moves)
