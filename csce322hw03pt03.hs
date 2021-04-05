@@ -105,7 +105,7 @@ stopIndexFinder playerColumn playerPosition = if (stopFinder (subListMaker playe
     else ((fst playerPosition) + (stopXIndexFinder (subListMaker playerColumn (fst playerPosition))) + 1, snd playerPosition)
 
 getStopIndex :: [[Char]] -> (Int, Int) -> (Int, Int)
-getStopIndex maze playerPosition = stopIndexFinder (getPlayerColumn maze (snd (head (getSortedList maze)))) playerPosition
+getStopIndex maze playerPosition = stopIndexFinder (getPlayerColumn maze (snd playerPosition)) playerPosition
 
 updateMatrix :: [[Char]] -> Char -> (Int, Int) -> [[Char]]
 updateMatrix maze player (row, column) =
