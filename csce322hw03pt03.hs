@@ -4,6 +4,7 @@ import Data.List
 import Data.Char
 import Data.Maybe
 import Data.Function ( on )
+import Data.Ord
 import Helpers
   
 -- The main method that will be used for testing / command line access
@@ -60,8 +61,13 @@ finalPlayerFinder maze n = case n of
 finalPlayerList :: [[Char]] -> [([Int], [Int])] -> [(Int, Int)]
 finalPlayerList maze mazeList = finalPlayerFinder maze (length mazeList)
 
+sortFunction (a, b) (c, d)
+    | a < c = LT
+    | a > c = GT
+    | a == c = compare b d
+
 getSortedList :: [[Char]] -> [(Int, Int)]
-getSortedList maze = reverse (sortBy (compare `on` fst) (finalPlayerList maze (clearingPlayerList maze)))
+getSortedList maze = reverse (sortBy sortFunction (finalPlayerList maze (clearingPlayerList maze)))
 
 getPlayerColumn :: [[Char]] -> Int -> [Char]
 getPlayerColumn maze column = map (!! column) maze
