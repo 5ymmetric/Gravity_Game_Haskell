@@ -72,6 +72,9 @@ getSortedList maze = reverse (sortBy sortFunction (finalPlayerList maze (clearin
 getPlayerColumn :: [[Char]] -> Int -> [Char]
 getPlayerColumn maze column = map (!! column) maze
 
+getPlayerRow :: [[Char]] -> Int -> [Char]
+getPlayerRow maze row = maze !! row
+
 isSolved :: [[Char]] -> Bool
 isSolved [] = True
 isSolved (x:xs)
@@ -113,9 +116,11 @@ stopIndexFinder playerColumn playerPosition = if (stopFinder (subListMaker playe
 getStopIndex :: [[Char]] -> (Int, Int) -> (Int, Int)
 getStopIndex maze playerPosition = stopIndexFinder (getPlayerColumn maze (snd playerPosition)) playerPosition
 
+updateElementWithIndex :: Int -> Char -> [Char] -> [Char]
+updateElementWithIndex index element playerColumn = take index playerColumn ++ [element] ++ drop (index + 1) playerColumn
+
 updateMatrix :: [[Char]] -> Char -> (Int, Int) -> [[Char]]
-updateMatrix maze player (row, column) =
-  take row maze ++ [take column (maze !! row) ++ [player] ++ drop (column + 1) (maze !! row)] ++ drop (row + 1) maze
+updateMatrix maze player (row, column) = take row maze ++ [(updateElementWithIndex column player (getPlayerRow maze row))] ++ drop (row + 1) maze
 
 findPlayerOrder :: [[Char]] -> [Char]
 findPlayerOrder maze = [x | x <- (concat (clockwise (clockwise maze))), x `elem` ['1', '2', '3', '4']]
